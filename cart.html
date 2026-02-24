@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SITA - Your Cart</title>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,wght@0,700;1,400;1,700&family=Cormorant+Garamond:wght@400;600;700&display=swap" rel="stylesheet">
+    
+    <link rel="stylesheet" href="lol2.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <style>
+        :root {
+            --luxury-font: 'Bodoni Moda', serif;
+            --elegant-font: 'Cormorant Garamond', serif;
+            --luxury-gold: #c5a059; /* الذهبي بتاعنا */
+        }
+
+        body { 
+            background: #f9f9f9; 
+            color: #000; 
+            font-family: var(--elegant-font) !important; 
+            margin: 0; 
+        }
+
+        .cart-container { max-width: 800px; margin: 50px auto; padding: 20px; }
+        
+        .cart-header { 
+            border-bottom: 2px solid #000; 
+            padding-bottom: 10px; 
+            margin-bottom: 30px; 
+            display: flex; 
+            justify-content: space-between; 
+            align-items: center; 
+        }
+        
+        .cart-header h1 {
+            font-family: var(--luxury-font) !important;
+            margin: 0;
+            font-size: 24px;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+        }
+
+        .cart-item { 
+            display: flex; 
+            align-items: center; 
+            background: white; 
+            padding: 15px; 
+            border-bottom: 1px solid #eee; 
+            gap: 20px; 
+            margin-bottom: 10px;
+            border-radius: 8px;
+        }
+
+        .cart-item img { width: 80px; height: 100px; object-fit: cover; border-radius: 5px; }
+        
+        .item-details { flex-grow: 1; }
+        
+        .item-details h3 { 
+            font-family: var(--luxury-font) !important;
+            font-size: 16px; 
+            margin: 0 0 5px 0; 
+            text-transform: uppercase; 
+        }
+        
+        .item-details p { 
+            color: #666; 
+            font-size: 14px; 
+            margin: 2px 0; 
+        }
+
+        /* تنسيق السعر الجديد والقديم في الكارت */
+        .item-price { 
+            font-family: var(--luxury-font); 
+            font-style: italic;
+            font-weight: 700;
+            font-size: 15px; 
+            margin-top: 5px; 
+            color: #000; /* السعر الأساسي أسود */
+        }
+
+      /* 1. السعر القديم: خليه رمادي باهت زي باقي الموقع بدل الذهبي */
+.old-price-cart {
+    text-decoration: line-through;
+    color: #a0a0a0; /* اللون الرمادي الاحترافي */
+    font-size: 13px;
+    margin-right: 10px;
+    font-style: normal;
+    font-weight: 400;
+}
+
+/* 2. اللوجو: خليه شفاف (Glassmorphism) عشان يبقى شيك */
+.logo-cart-style {
+    color: white;
+    font-size: 24px;
+    font-family: var(--luxury-font);
+    opacity: 0.8; /* شفافية بسيطة */
+    letter-spacing: 4px; /* وسع المسافات شوية عشان الفخامة */
+    text-shadow: 0 0 10px rgba(255,255,255,0.2);
+}
+        
+        .remove-btn { color: #ccc; cursor: pointer; font-size: 18px; transition: 0.3s; }
+        .remove-btn:hover { color: #000; transform: scale(1.1); }
+
+        .cart-summary-wrapper { 
+            max-width: 500px; 
+            margin: 40px auto; 
+            padding: 20px; 
+            border-top: 2px solid #000; 
+            text-align: center; 
+        }
+
+        #cart-total-display {
+            font-family: var(--luxury-font);
+            font-style: italic;
+            font-size: 32px;
+            font-weight: bold;
+            margin-top: 5px;
+            color: #000;
+        }
+
+        .checkout-btn { 
+            width: 100%; 
+            background: #000; 
+            color: #fff; 
+            padding: 18px; 
+            border: none; 
+            cursor: pointer; 
+            font-size: 16px; 
+            font-weight: bold; 
+            border-radius: 4px;
+            letter-spacing: 2px; 
+            transition: 0.3s; 
+            font-family: var(--luxury-font);
+        }
+        .checkout-btn:hover { background: var(--luxury-gold); color: #000; }
+        
+        .continue-link { 
+            display: block; 
+            margin-top: 15px; 
+            color: #000; 
+            text-decoration: underline; 
+            font-size: 13px; 
+            cursor: pointer; 
+            opacity: 0.7; 
+        }
+    </style>
+</head>
+<body>
+
+   <header class="header" style="background: black; padding: 15px 5%; display: flex; justify-content: space-between; align-items: center;">
+    <div class="logo-cart-style" onclick="window.location.href='lol.html'" style="cursor: pointer;">SITA</div>
+    <a href="lol.html" style="color: rgba(255,255,255,0.6); text-decoration: none; font-size: 11px; font-weight: bold; letter-spacing: 1px; text-transform: uppercase;">← Continue Shopping</a>
+</header>
+
+    <div class="cart-container">
+        <div class="cart-header">
+            <h1>SHOPPING CART</h1>
+            <span id="items-count" style="color: #666;">0 Items</span>
+        </div>
+
+        <div id="cart-items-list"></div>
+
+        <div id="cart-summary-section" class="cart-summary-wrapper" style="display: none;">
+            <div style="margin-bottom: 25px;">
+                <span style="font-size: 14px; color: #888; text-transform: uppercase; letter-spacing: 1px;">Estimated Total</span>
+                <div id="cart-total-display">0.00 EGP</div>
+                <p style="font-size: 11px; color: #aaa; margin-top: 5px;">Taxes and shipping calculated at checkout</p>
+            </div>
+
+            <button class="checkout-btn" onclick="goToCheckout()">PROCEED TO CHECKOUT</button>
+            <a onclick="window.location.href='lol.html'" class="continue-link">Continue Shopping</a>
+        </div>
+    </div>
+
+    <script>
+     function displayCart() {
+    let cart = JSON.parse(localStorage.getItem('sitaCart')) || [];
+    const list = document.getElementById('cart-items-list');
+    const summarySection = document.getElementById('cart-summary-section');
+    const countLabel = document.getElementById('items-count');
+    const totalDisplay = document.getElementById('cart-total-display');
+    
+    list.innerHTML = "";
+    let total = 0;
+
+    if (cart.length === 0) {
+        list.innerHTML = '<div style="text-align:center; padding:50px; font-size:18px; opacity:0.5;">Your cart is empty 🛍️</div>';
+        summarySection.style.display = "none";
+        countLabel.innerText = "0 Items";
+        return;
+    }
+
+    summarySection.style.display = "block";
+    countLabel.innerText = `${cart.length} Items`;
+
+    cart.forEach((item, index) => {
+        // تنظيف السعر من أي نصوص لضمان حساب صحيح
+        let priceNum = parseFloat(item.price.toString().replace(/[^\d]/g, '')) || 0;
+        let quantity = parseInt(item.qty) || 1;
+        total += (priceNum * quantity);
+
+        // تعديل السعر القديم ليظهر بالرمادي (old-price-cart) مع تنسيق أنيق
+        let oldPriceHTML = "";
+        if (item.oldPriceDisplay) {
+            oldPriceHTML = `<span class="old-price-cart" style="color: #a0a0a0; text-decoration: line-through; margin-right: 10px; font-weight: 400; font-family: var(--elegant-font);">${item.oldPriceDisplay}</span>`;
+        }
+
+        list.innerHTML += `
+            <div class="cart-item">
+                <img src="${item.img}" alt="${item.name}">
+                <div class="item-details">
+                    <h3 style="letter-spacing: 1px;">${item.name}</h3>
+                    <p style="font-size: 13px;">Size: <span style="color:#000; font-weight:600;">${item.size}</span> | Qty: <span style="color:#000; font-weight:600;">${quantity}</span></p>
+                    <div class="item-price" style="margin-top: 8px;">
+                        ${oldPriceHTML}
+                        <span style="color: #000; font-weight: 700;">${priceNum.toLocaleString()} EGP</span>
+                    </div>
+                </div>
+                <i class="fas fa-trash-alt remove-btn" onclick="removeItem(${index})" style="opacity: 0.5;"></i>
+            </div>
+        `;
+    });
+
+    totalDisplay.innerText = total.toLocaleString() + " EGP";
+}
+
+        function removeItem(index) {
+            let cart = JSON.parse(localStorage.getItem('sitaCart')) || [];
+            cart.splice(index, 1);
+            localStorage.setItem('sitaCart', JSON.stringify(cart));
+            displayCart();
+            // تحديث عداد الهيدر لو موجود
+            if(window.parent && window.parent.refreshCartBadge) window.parent.refreshCartBadge();
+        }
+
+        function goToCheckout() {
+            let cart = JSON.parse(localStorage.getItem('sitaCart')) || [];
+            if (cart.length === 0) return;
+            window.location.href = 'checkout.html';
+        }
+
+        window.onload = displayCart;
+    </script>
+</body>
+</html>

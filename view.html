@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SITA - Product Details</title>
+    <link rel="stylesheet" href="lol2.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+</head>
+<body style="background-color: white; color: black;">
+
+    <header class="header" style="background: black; padding: 15px 5%;">
+        <div class="logo">SITA</div>
+        <a href="lol.html" style="color: white; text-decoration: none; font-size: 14px;">← BACK TO HOME</a>
+    </header>
+
+    <section class="product-page-container">
+        <div class="product-layout">
+            <div class="product-images">
+                <div class="slider-wrapper">
+                    <button class="slider-arrow prev" onclick="moveSlide(-1)">&#10094;</button>
+                    <img id="main-product-img" src="" alt="Product Image">
+                    <button class="slider-arrow next" onclick="moveSlide(1)">&#10095;</button>
+                    <div class="slide-counter"><span id="current-slide">1</span>/4</div>
+                </div>
+            </div>
+
+            <div class="product-info-column">
+                <p class="brand-tag">SITA STYLE</p>
+                <h1 id="product-name">Loading...</h1>
+                <p id="product-price" class="product-price-tag"></p>
+ 
+                <div class="size-chart-link">
+                    <a href="javascript:void(0)" onclick="openSizeChart()">Size Chart</a>
+                </div>
+
+                <div id="sizeChartModal" class="modal">
+                    <div class="modal-content">
+                        <span class="close-modal" onclick="closeSizeChart()">&times;</span>
+                        <img id="size-chart-img" src="" alt="Size Chart">
+                    </div>
+                </div>
+
+                <div class="selector-section">
+                    <label>Size</label>
+                    <div class="size-chips">
+                        <button class="chip">L</button>
+                        <button class="chip active">XL</button>
+                        <button class="chip">2XL</button>
+                    </div>
+                </div>
+
+                <div class="selector-section">
+                    <label>Quantity</label>
+                    <div class="qty-picker">
+                        <button onclick="changeQty(-1)">-</button>
+                        <input type="number" id="qty-val" value="1" readonly>
+                        <button onclick="changeQty(1)">+</button>
+                    </div>
+                </div>
+
+                <div class="action-buttons">
+                    <button class="main-add-btn" onclick="addToCart()">ADD TO CART</button>
+                    <button class="buy-now-btn" onclick="buyItNow()">BUY IT NOW</button>
+
+                    <div id="cartModal" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.5); z-index:10000; align-items:center; justify-content:center;">
+    <div style="background:white; width:90%; max-width:400px; padding:20px; border-radius:8px; position:relative; text-align:center;">
+        <span onclick="closeModal()" style="position:absolute; top:10px; right:15px; cursor:pointer; font-size:20px;">&times;</span>
+        <p style="color:green; font-weight:bold; margin-bottom:15px;">✓ Item added to your cart</p>
+        
+        <div style="display:flex; gap:15px; align-items:center; border-bottom:1px solid #eee; padding-bottom:15px; margin-bottom:15px; text-align:left;">
+            <img id="modalProductImg" src="" style="width:70px; height:90px; object-fit:cover; border-radius:4px;">
+            <div>
+                <h4 id="modalProductName" style="margin:0; font-size:14px;"></h4>
+                <p id="modalProductSize" style="margin:5px 0; font-size:12px; color:#666;"></p>
+            </div>
+        </div>
+
+        <button onclick="window.location.href='cart.html'" style="width:100%; padding:12px; background:white; border:1px solid black; margin-bottom:10px; cursor:pointer; font-weight:bold;">View my cart (<span id="modalCartCount">0</span>)</button>
+        <button onclick="window.location.href='checkout.html'" style="width:100%; padding:12px; background:black; color:white; border:none; margin-bottom:10px; cursor:pointer; font-weight:bold;">Check out</button>
+        <button onclick="closeModal()" style="background:none; border:none; text-decoration:underline; cursor:pointer; font-size:13px;">Continue shopping</button>
+    </div>
+</div>
+
+<script>
+function buyItNow() {
+    const product = {
+        name: document.getElementById('product-name').innerText,
+        price: document.getElementById('product-price').innerText,
+        img: document.getElementById('main-product-img').src,
+        size: document.querySelector('.chip.active').innerText,
+        qty: document.getElementById('qty-val').value
+    };
+    // بنخزن المنتج ده لوحده عشان صفحة الدفع السريع
+    localStorage.setItem('quickBuy', JSON.stringify(product));
+    window.location.href = 'checkout.html';
+}
+</script>
+                </div>
+
+                <div class="product-extra-info">
+                    <div class="info-item">
+                        <h3>Details</h3>
+                        <p id="product-details-content">Loading details...</p>
+                    </div>
+                    <div class="info-item">
+                        <h3>Shipping Info</h3>
+                        <p>Delivery within 2-3 business days across Egypt. Tracking number provided via SMS.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+<script>
+    let currentIdx = 1;
+    let productImages = [];
+    let startX = 0;
+    let isMoving = false;
+
+    // --- جدول البيانات الجديد ---
+    const productDatabase = {
+        "black Round": "• black Round - boxy fit.<br>• Premium high-quality fabric for maximum comfort.<br>• Modern fit designed for daily wear.",
+        "brgandy Round": "• brgandy Round - boxy fit.<br>• Premium high-quality fabric for maximum comfort.<br>• Modern fit designed for daily wear.",
+        "gray Round": "• gray Round - boxy fit.<br>• Premium high-quality fabric for maximum comfort.<br>• Modern fit designed for daily wear.",
+        "brgndy Hoodie": "• brgndy Hoodie - boxy fit.<br>• Premium high-quality fabric for maximum comfort.<br>• Modern fit designed for daily wear.",
+        "black Hoodie": "• black Hoodie - boxy fit.<br>• Premium high-quality fabric for maximum comfort.<br>• Modern fit designed for daily wear.",
+        "grey Hoodie": "• grey Hoodie - boxy fit.<br>• Premium high-quality fabric for maximum comfort.<br>• Modern fit designed for daily wear.",
+        "black Jacket": "• black Jacket - boxy fit.<br>• Premium high-quality fabric for maximum comfort.<br>• Modern fit designed for daily wear."
+    };
+
+    window.onload = () => {
+        const urlParams = new URLSearchParams(window.location.search);
+        const name = urlParams.get('name');
+        const price = urlParams.get('price');
+        const mainImg = urlParams.get('img');
+        
+        if(name) {
+            document.getElementById('product-name').innerText = name;
+            document.getElementById('product-price').innerText = price;
+            
+            const detailsBox = document.getElementById('product-details-content');
+            if (productDatabase[name]) {
+                detailsBox.innerHTML = productDatabase[name];
+            } else {
+                detailsBox.innerHTML = "• Premium high-quality fabric.<br>• Modern fit designed for daily wear.";
+            }
+
+            const dotIndex = mainImg.lastIndexOf('.');
+            const baseName = mainImg.substring(0, dotIndex);
+            const ext = mainImg.substring(dotIndex);
+            
+            productImages = [mainImg, `${baseName}_2${ext}`, `${baseName}_3${ext}`, `${baseName}_4${ext}`];
+            
+            updateSlider();
+            initMobileSwipe();
+            renderRelated(name);
+        }
+    };
+
+    function updateSlider() {
+        const imgElement = document.getElementById('main-product-img');
+        if(!imgElement) return;
+        imgElement.style.opacity = "0.4";
+        setTimeout(() => {
+            imgElement.src = productImages[currentIdx - 1];
+            document.getElementById('current-slide').innerText = currentIdx;
+            imgElement.style.opacity = "1";
+        }, 100);
+    }
+
+    function moveSlide(direction) {
+        currentIdx += direction;
+        if (currentIdx > 4) currentIdx = 1;
+        if (currentIdx < 1) currentIdx = 4;
+        updateSlider();
+    }
+
+    function openSizeChart() {
+        const productName = document.getElementById('product-name').innerText.toLowerCase();
+        const chartImg = document.getElementById('size-chart-img');
+        if (productName.includes('hoodie')) chartImg.src = 'IMG_Hoodie.PNG';
+        else if (productName.includes('round')) chartImg.src = 'IMG_Round.PNG';
+        else if (productName.includes('jacket')) chartImg.src = 'IMG_Jacket.PNG';
+        else chartImg.src = 'IMG_General.PNG';
+        document.getElementById('sizeChartModal').style.display = "block";
+        document.body.style.overflow = "hidden";
+    }
+
+    function closeSizeChart() {
+        document.getElementById('sizeChartModal').style.display = "none";
+        document.body.style.overflow = "auto";
+    }
+
+    function initMobileSwipe() {
+        const area = document.querySelector('.slider-wrapper');
+        if(!area) return;
+        area.addEventListener('touchstart', (e) => { startX = e.touches[0].clientX; isMoving = true; }, {passive: true});
+        area.addEventListener('touchend', (e) => {
+            if(!isMoving) return;
+            let diff = startX - e.changedTouches[0].clientX;
+            if (Math.abs(diff) > 40) moveSlide(diff > 0 ? 1 : -1);
+            isMoving = false;
+        }, {passive: true});
+    }
+
+    function changeQty(amt) {
+        let input = document.getElementById('qty-val');
+        let val = parseInt(input.value) + amt;
+        if (val >= 1) input.value = val;
+    }
+
+    document.querySelectorAll('.chip').forEach(chip => {
+        chip.addEventListener('click', function() {
+            document.querySelectorAll('.chip').forEach(c => c.classList.remove('active'));
+            this.classList.add('active');
+        });
+    });
+
+    window.onclick = (e) => { if(e.target == document.getElementById('sizeChartModal')) closeSizeChart(); }
+
+    // --- دالة إضافة المنتج للعربة (المحرك) ---
+    function addToCart() {
+    const productName = document.getElementById('product-name').innerText;
+    const productPrice = document.getElementById('product-price').innerText;
+    const productImg = document.getElementById('main-product-img').src;
+    const productSize = document.querySelector('.chip.active').innerText;
+    const productQty = parseInt(document.getElementById('qty-val').value);
+
+    let cart = JSON.parse(localStorage.getItem('sitaCart')) || [];
+    
+    // إضافة المنتج للمصفوفة
+    cart.push({
+        name: productName,
+        price: productPrice,
+        img: productImg,
+        size: productSize,
+        qty: productQty
+    });
+
+    localStorage.setItem('sitaCart', JSON.stringify(cart));
+
+    // تحديث بيانات الـ Modal قبل فتحه
+    document.getElementById('modalProductName').innerText = productName;
+    document.getElementById('modalProductImg').src = productImg;
+    document.getElementById('modalProductSize').innerText = "Size: " + productSize;
+    document.getElementById('modalCartCount').innerText = cart.length;
+
+    // إظهار الـ Modal بدل الـ Alert
+    document.getElementById('cartModal').style.display = 'flex';
+}
+
+function closeModal() {
+    document.getElementById('cartModal').style.display = 'none';
+}
+</script>
+<div class="related-products" style="max-width: 1200px; margin: 80px auto; padding: 20px; border-top: 1px solid #eee;">
+    <h2 style="text-align: center; font-size: 18px; letter-spacing: 3px; margin-bottom: 40px; font-weight: 900; text-transform: uppercase;">You May Also Like</h2>
+    <div id="related-grid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 25px;">
+        </div>
+</div>
+
+<script>
+    // 1. القائمة كاملة
+    const allProducts = [
+        { name: "black Round", price: "750.00 EGP", img: "IMG_6705.JPG" },
+        { name: "brgandy Round", price: "750.00 EGP", img: "IMG_9214.PNG" },
+        { name: "gray Round", price: "750.00 EGP", img: "IMG_9215.PNG" },
+        { name: "brgndy Hoodie", price: "700.00 EGP", img: "IMG_9218.PNG" },
+        { name: "black Hoodie", price: "750.00 EGP", img: "IMG_9220.PNG" },
+        { name: "grey Hoodie", price: "750.00 EGP", img: "IMG_9219.PNG" },
+        { name: "black Jacket", price: "1500.00 EGP", img: "IMG_9221.PNG" }
+    ];
+
+  function renderRelated(currentName) {
+    const grid = document.getElementById('related-grid');
+    if (!grid) return;
+
+    const path = window.location.pathname;
+    const page = path.split("/").pop();
+    let targetPage = (page === 'product-details.html' || page === '') ? 'view.html' : 'product-details.html';
+
+    let others = allProducts.filter(p => p.name !== currentName);
+    let shuffled = others.sort(() => 0.5 - Math.random()).slice(0, 3);
+
+    // التعديل هنا في الـ Style بتاع الـ Grid
+    grid.style.display = "grid";
+    grid.style.gridTemplateColumns = "repeat(3, 1fr)"; // بيجبر الـ 3 يبقوا جنب بعض
+    grid.style.gap = "10px"; // تصغير المسافة عشان المساحة في الموبايل
+
+    grid.innerHTML = shuffled.map(p => `
+        <a href="${targetPage}?name=${encodeURIComponent(p.name)}&price=${encodeURIComponent(p.price)}&img=${encodeURIComponent(p.img)}" 
+           style="text-decoration: none; color: #000; display: block; text-align: center;">
+            <div style="width: 100%; aspect-ratio: 3/4; overflow: hidden; border-radius: 4px; background: #f9f9f9; margin-bottom: 8px;">
+                <img src="${p.img}" style="width: 100%; height: 100%; object-fit: cover;">
+            </div>
+            <div style="font-weight: 600; font-size: 10px; text-transform: uppercase; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">${p.name}</div>
+            <div style="color: #666; font-size: 11px; margin-top: 2px;">${p.price.replace('.00 EGP', '')}</div>
+        </a>
+    `).join('');
+}
+
+    // بننادي الدالة جوه الـ window.onload الأساسي اللي فوق
+    // ملحوظة: ضيف السطر اللي جاي ده "renderRelated(name);" جوه الـ window.onload اللي في نص الكود عندك
+</script>
+</body>
+</html>

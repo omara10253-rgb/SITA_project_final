@@ -1,0 +1,1072 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    background-color: rgb(0, 0, 0);
+    color: white;
+    overflow-x: hidden; /* منع الهبد يمين وشمال */
+}
+
+
+/* التنسيق الأساسي للهيدر */
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 5%;
+    width: 100%;
+    z-index: 10000;
+    transition: all 0.3s ease;
+}
+
+/* شريط الإعلان */
+.global-sale-banner {
+    display: flex;
+    align-items: center;
+    overflow: hidden;
+    width: 100%;
+    z-index: 10001;
+    white-space: nowrap;
+}
+
+.icons span {
+    margin-left: 15px;
+    cursor: pointer;
+}
+
+/* --- Hero Section المطور --- */
+.hero {
+    position: relative;
+    width: 100%;
+    height: 130vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    color: white;
+    background-image: url('Hero.jpeg'); 
+    background-size: cover !important;
+    /* تعديل اللاب توب: 8% بتنزل الصورة تحت الشريط وتخلي الوش كامل */
+    background-position: center 8% !important; 
+    background-repeat: no-repeat;
+    overflow: hidden; 
+    margin-top: 0 !important;
+    animation: heroImageZoom 3s ease-out forwards;
+}
+
+@keyframes heroImageZoom {
+    from { transform: scale(1.1); }
+    to { transform: scale(1); }
+}
+
+/* --- 🔥 تعديلات الموبايل 🔥 --- */
+@media (max-width: 768px) {
+    html, body {
+        max-width: 100vw !important;
+        overflow-x: hidden !important;
+        position: relative;
+        margin: 0;
+        padding: 0;
+    }
+
+    .header {
+        position: absolute !important; 
+        top: 30px !important;
+        width: 100vw !important;
+        padding: 10px 15px !important;
+        display: flex !important;
+        justify-content: space-between !important;
+        align-items: center !important;
+        box-sizing: border-box !important;
+        left: 0 !important;
+        background: transparent !important;
+    }
+
+    .logo {
+        transition: all 0.4s ease !important;
+        text-shadow: 0 2px 10px rgba(0,0,0,0.5);
+    }
+
+    .menu-icon span {
+        background-color: white !important;
+    }
+
+    /* العدسة */
+    .search-box {
+        display: flex;
+        align-items: center;
+        background: transparent !important;
+        border: none !important;
+        padding: 5px !important;
+        transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        max-width: 35px;
+        overflow: hidden;
+        cursor: pointer;
+    }
+
+    .search-box.active {
+        max-width: 150px !important;
+        background: rgba(0, 0, 0, 0.3) !important;
+        backdrop-filter: blur(5px);
+        border-radius: 20px;
+    }
+    
+    #search-input {
+        width: 0;
+        opacity: 0;
+        border: none;
+        background: transparent;
+        color: white;
+        outline: none;
+        font-size: 14px;
+        transition: 0.3s ease;
+    }
+
+    .search-box.active #search-input {
+        width: 100px;
+        opacity: 1;
+        margin-left: 5px;
+    }
+
+    /* الهيرو للموبايل: السر في الـ 0% لضمان عدم قص الرأس */
+    .hero { 
+        height: 79vh !important; 
+        background-position: center 0% !important; 
+        width: 100% !important;
+        background-attachment: scroll !important;
+    }
+    
+    .hero-content {
+        left: 15px !important;
+        width: 90% !important;
+        bottom: 40px !important;
+    }
+
+    /* السلايدر */
+    .products-slider {
+        display: flex !important;
+        flex-wrap: nowrap !important;
+        overflow-x: auto !important;
+        scroll-snap-type: x mandatory !important;
+        gap: 15px !important;
+        padding: 10px 15px 20px !important;
+        width: 100% !important;
+        box-sizing: border-box !important;
+    }
+
+    .products-slider .product-card {
+        flex: 0 0 46% !important; 
+        min-width: 46% !important;
+        scroll-snap-align: start !important;
+    }
+
+    /* الـ Collection */
+    .products-container {
+        display: grid !important; 
+        grid-template-columns: 1fr 1fr !important; 
+        gap: 15px !important;
+        padding: 15px !important;
+        width: 100% !important;
+    }
+
+    .products-container .product-card {
+        width: 100% !important;
+    }
+}
+
+/* Dark overlay - اللون الباهت الأصلي */
+.overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(to top, rgba(0,0,0,0.8) 0%, rgba(0,0,0,0.3) 100%);
+    z-index: 1;
+}
+
+/* Hero content */
+.hero-content {
+    position: absolute;
+    bottom: 100px; 
+    left: 50px;
+    color: white;
+    max-width: 600px; 
+    z-index: 2; 
+}
+
+.hero-content h1 {
+    font-family: var(--luxury-font) !important; /* ده الفونت الفخم */
+    font-size: 52px; 
+    line-height: 1.1;
+    margin-bottom: 25px;
+    font-weight: 700;
+    text-shadow: 2px 2px 15px rgba(0,0,0,0.3);
+    opacity: 0;
+    animation: fadeInUpSita 0.8s ease-out 0.7s forwards;
+}
+
+.small-text {
+    font-family: var(--elegant-font) !important; /* الفونت الرفيع الشيك */
+    font-size: 16px;
+    margin-bottom: 12px;
+    text-transform: uppercase;
+    letter-spacing: 2px; 
+    font-weight: 300;
+    opacity: 0;
+    animation: fadeInUpSita 0.8s ease-out 0.4s forwards;
+}
+
+.hero-content .btn {
+    opacity: 0;
+    animation: fadeInSita 1s ease-out 1.2s forwards;
+}
+
+@keyframes fadeInUpSita {
+    from { opacity: 0; transform: translateY(30px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes fadeInSita {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+@media (max-width: 768px) {
+    .hero-content h1 {
+        font-size: 2.2rem !important;
+    }
+}
+
+.btn {
+    background: transparent;
+    border: 2px solid white;
+    color: white;
+    padding: 12px 30px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: 0.3s;
+    display: inline-block; 
+    text-decoration: none; 
+    text-align: center;
+    position: relative;
+}
+
+.btn:hover {
+    background-color: white;
+    color: black;
+    transform: translateY(-3px); 
+}
+/* Icons */
+.menu-icon {
+    width: 23px;
+    cursor: pointer;
+}
+
+.menu-icon span {
+    display: block;
+    height: 2px;
+    background-color: white;
+    margin: 6px 0;
+}
+
+.search-icon {
+    width: 17px;
+    height: 17px;
+    border: 2px solid white;
+    border-radius: 50%;
+    position: relative;
+    cursor: pointer;
+}
+
+.search-icon::after {
+    content: "";
+    width: 8px;
+    height: 2px;
+    background-color: white;
+    position: absolute;
+    bottom: -4px;
+    right: -6px;
+    transform: rotate(45deg);
+}
+
+.cart-icon {
+    color: white;
+    cursor: pointer;
+}
+
+.header-icons {
+    display: flex;
+    gap: 20px;
+    align-items: center;
+}
+
+.search-box {
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    transition: all 0.4s ease;
+    background: rgba(255, 255, 255, 0.1);
+    padding: 5px 12px;
+    border-radius: 20px;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+#search-input {
+    background: transparent;
+    border: none;
+    color: white;
+    outline: none;
+    width: 120px; 
+    font-size: 14px;
+    transition: 0.3s;
+}
+
+#search-input::placeholder {
+    color: rgba(255, 255, 255, 0.5);
+}
+
+#search-input:focus {
+    width: 180px; 
+}
+
+.search-btn {
+    color: white;
+    font-size: 14px;
+    margin-left: 8px;
+    cursor: pointer;
+}
+
+/* --- كوليكشن المنتجات (الديسكتوب) --- */b    
+.pants-collection {
+    padding: 10px 5% !important;
+}
+
+.section-title {
+    text-align: left !important;
+    padding-left:10px !important;
+    font-size: 20px;
+    text-transform: uppercase;
+    margin-bottom: 15px !important;
+}
+
+/* --- تعديل الديسكتوب لصفحتين Home و Collection --- */
+.products-slider, 
+.products-container {
+    display: grid !important;
+    /* 1. تقسيم العرض على 3 بالتساوي عشان يملأ الفراغ الأسود */
+    grid-template-columns: repeat(3, 1fr) !important; 
+    
+    /* 2. المسافة بين الكروت */
+    gap: 35px; 
+    
+    /* 3. تقليل الهامش الجانبي عشان يبدأ من الشمال اوي */
+    padding: 20px 3% !important; 
+    
+    width: 100%;
+    box-sizing: border-box;
+    
+    /* 4. البداية من الشمال */
+    justify-content: start !important; 
+}
+
+.products-slider .product-card, 
+.products-container .product-card {
+    background: #fff; /* اللون الأبيض ثابت */
+    color: #000;
+    padding: 15px;
+    border-radius: 10px;
+    transition: 0.3s;
+    width: 100% !important; 
+}
+
+.product-card:nth-child(1) { animation-delay: 0.2s; }
+.product-card:nth-child(2) { animation-delay: 0.4s; }
+.product-card:nth-child(3) { animation-delay: 0.6s; }
+
+.product-card:hover {
+    transform: translateY(-5px);
+}
+
+.image-wrapper {
+  position: relative;
+  margin-bottom: 15px;
+  border-radius: 8px;
+  overflow: hidden;
+  background-color: #f9f9f9;
+  /* بيحافظ على تناسب الصورة مهما عرض الكارت */
+  aspect-ratio: 3 / 4 !important; 
+}
+
+.image-wrapper img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover !important; /* عشان الصورة متتمطش */
+    border-radius: 5px;
+}
+
+/* العداد (مخفي في الشاشات الكبيرة) */
+.slider-controls { display: none; }
+
+
+.product-card:hover .image-wrapper img {
+    transform: scale(1.08);
+}
+
+.sold-out-badge {
+  position: absolute;
+  bottom: 15px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: rgba(200, 190, 180, 0.9);
+  color: #444;
+  padding: 6px 18px;
+  border-radius: 25px;
+  font-size: 13px;
+  white-space: nowrap;
+}
+
+.product-info h3 {
+  font-size: 17px;
+  margin: 10px 0 5px;
+  font-weight: 600;
+}
+
+.options-btn {
+  width: 100%;
+  padding: 12px;
+  background: white;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+
+.options-btn:hover {
+  border-color: #1a3d15;
+  background-color: #f8f8f8;
+}
+
+/* Footer */
+.footer-simple {
+    background-color: #ffffff; 
+    color: #000000; 
+    text-align: center;
+    padding: 60px 20px;
+    font-family: Arial, sans-serif;
+    border-top: 1px solid #eee; 
+}
+
+.footer-simple h3 {
+    text-transform: lowercase;
+    margin-bottom: 30px;
+    font-size: 1.2rem;
+    letter-spacing: 1px;
+}
+
+.social-links {
+    margin-bottom: 40px;
+}
+
+.social-links a {
+    color: #000000; 
+    font-size: 28px; 
+    margin: 0 20px;
+    text-decoration: none;
+    display: inline-block;
+    transition: transform 0.3s ease, opacity 0.3s ease;
+}
+
+.social-links a:hover {
+    transform: scale(1.2);
+    opacity: 0.7; 
+}
+
+.copyright {
+    font-size: 11px;
+    opacity: 0.5;
+    letter-spacing: 0.5px;
+    color: #000000;
+}
+
+/* Side Menu */
+/* ابحث عن .side-menu في ملف الـ CSS وغيره لكده */
+.side-menu {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 280px;
+    height: 100%;
+    background-color: #000 !important; /* أسود معتم تماماً */
+    z-index: 999999 !important; /* رقم فلكي عشان مفيش حاجة تغطي عليها */
+    transition: 0.4s ease;
+    transform: translateX(-100%); 
+    padding: 60px 30px; /* زودنا الـ padding من فوق عشان الزرار */
+    display: flex;
+    flex-direction: column;
+}
+
+.side-menu.active {
+    transform: translateX(0); 
+}
+
+/* ابحث عن .close-btn وغيره لكده */
+.close-btn {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    color: white;
+    font-size: 30px;
+    cursor: pointer;
+    line-height: 1;
+}
+.side-menu nav a {
+    display: block;
+    color: white;
+    text-decoration: none;
+    font-size: 18px;
+    margin-bottom: 20px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    transition: all 0.3s ease;
+}
+
+.side-menu nav a:hover {
+    color:coral; 
+    padding-left: 10px; 
+}
+
+/* ابحث عن .menu-overlay وغيره لكده */
+.menu-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.8); /* تعتيم بنسبة 80% */
+    z-index: 999998; /* تحت المنيو بـ درجة واحدة */
+    display: none;
+    backdrop-filter: blur(5px); /* حركة صايعة بتعمل غلوشة على اللي ورا المنيو */
+}
+
+.menu-overlay.active {
+    display: block;
+}
+
+.menu-overlay.active {
+    display: block;
+}
+
+
+
+/*/* --- Product Details Page Styles (Final Swipe Optimized) --- */
+.product-page-container {
+    padding: 60px 8% 50px;
+    max-width: 1200px;
+    margin: auto;
+}
+
+.product-layout {
+    display: grid;
+    grid-template-columns: 1.1fr 1fr;
+    gap: 60px;
+}
+
+/* --- سلايدر الصور (محسن للسحب باليد) --- */
+.product-images {
+    position: relative;
+}
+/* --- الجزء الخاص بالسلايدر --- */
+.slider-wrapper {
+    position: relative;
+    width: 100%;
+    background: #f9f9f9;
+    border-radius: 12px;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    /* التعديل المصيري للسحب */
+    touch-action: pan-y; 
+    cursor: grab;
+}
+
+.slider-wrapper:active {
+    cursor: grabbing;
+}
+
+#main-product-img {
+    width: 100%;
+    height: auto;
+    border-radius: 8px;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+    transition: opacity 0.3s ease-in-out;
+    /* منع تداخل المتصفح مع السحب */
+    pointer-events: none;      
+    user-select: none;         
+    -webkit-user-drag: none;    
+}
+
+/* --- التعديل السحري للموبايل فقط --- */
+@media (max-width: 768px) {
+    /* إخفاء الأسهم تماماً في الموبايل عشان العميل يضطر يعمل سوايب */
+    .slider-arrow {
+        display: none !important;
+    }
+
+    /* تكبير مساحة اللمس في الموبايل */
+    .slider-wrapper {
+        min-height: 400px; /* عشان تكون مريحة لليد وهي بتسحب */
+        background: #fff;
+    }
+}
+.slider-arrow {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background: rgba(255, 255, 255, 0.9);
+    border: none;
+    width: 45px;
+    height: 45px;
+    border-radius: 50%;
+    cursor: pointer;
+    font-size: 20px;
+    z-index: 10;
+    transition: 0.3s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+}
+
+.slider-arrow:hover {
+    background: #fff;
+    transform: translateY(-50%) scale(1.1);
+}
+
+.prev { left: 15px; }
+.next { right: 15px; }
+
+/* العداد (1/4) */
+.slide-counter {
+    position: absolute;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: rgba(0, 0, 0, 0.7);
+    color: white;
+    padding: 6px 18px;
+    border-radius: 25px;
+    font-size: 12px;
+    letter-spacing: 2px;
+    font-weight: bold;
+    backdrop-filter: blur(5px);
+}
+
+/* --- تفاصيل المنتج --- */
+.brand-tag { color: #888; font-size: 12px; letter-spacing: 2px; margin-bottom: 8px; text-transform: uppercase; }
+.product-name-tag { font-size: 32px; font-weight: 700; color: #1a1a1a; margin-bottom: 10px; }
+.product-price-tag { font-size: 24px; margin: 15px 0; font-weight: 600; color: #1a1a1a; }
+
+.selector-section { margin-bottom: 35px; }
+.selector-section label { display: block; margin-bottom: 15px; font-weight: 600; text-transform: uppercase; font-size: 13px; color: #333; }
+
+/* المقاسات */
+.size-chips { display: flex; gap: 12px; flex-wrap: wrap; }
+.chip {
+    min-width: 70px;
+    height: 48px;
+    border: 1.5px solid #e0e0e0;
+    background: white;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: 600;
+    font-size: 14px;
+    transition: 0.2s all ease;
+}
+.chip.active { background: black; color: white; border-color: black; }
+.chip:hover:not(.active) { border-color: #999; }
+
+/* عداد الكمية */
+.qty-picker {
+    display: flex;
+    border: 1.5px solid #e0e0e0;
+    width: fit-content;
+    border-radius: 6px;
+    overflow: hidden;
+}
+.qty-picker button { padding: 12px 20px; border: none; background: none; cursor: pointer; font-size: 18px; transition: 0.2s; }
+.qty-picker button:hover { background: #f5f5f5; }
+#qty-val { width: 55px; text-align: center; border: none; font-size: 16px; font-weight: 600; background: transparent; }
+
+/* الأزرار */
+.action-buttons { display: flex; flex-direction: column; gap: 15px; margin-top: 20px; }
+
+.main-add-btn, .buy-now-btn {
+    width: 100%;
+    padding: 22px;
+    font-weight: 800;
+    cursor: pointer;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    transition: 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+    border-radius: 8px;
+    font-size: 14px;
+}
+
+.main-add-btn { background: white; color: black; border: 1.5px solid black; }
+.main-add-btn:hover { background: #000; color: #fff; }
+
+.buy-now-btn { background: black; color: white; border: none; }
+.buy-now-btn:hover { opacity: 0.85; transform: translateY(-3px); box-shadow: 0 10px 20px rgba(0,0,0,0.1); }
+
+/* معلومات إضافية */
+.product-extra-info { margin-top: 60px; border-top: 1px solid #eee; padding-top: 40px; }
+.info-item { margin-bottom: 35px; }
+.info-item h3 { font-size: 14px; margin-bottom: 12px; color: #1a1a1a; letter-spacing: 1px; text-transform: uppercase; }
+.info-item p { font-size: 14px; color: #555; line-height: 1.8; }
+
+/* التوافق مع الشاشات الصغيرة */
+@media (max-width: 768px) {
+    .product-layout { grid-template-columns: 1fr; gap: 40px; }
+    .product-page-container { padding: 60px 5% 40px; }
+    .product-name-tag { font-size: 26px; }
+    .slider-arrow { width: 38px; height: 38px; font-size: 16px; }
+    .main-add-btn, .buy-now-btn { padding: 18px; }
+}
+/* تنسيق رابط Size Chart */
+.size-chart-link {
+    margin: 15px 0;
+}
+
+.size-chart-link a {
+    color: #1a1a1a;
+    text-decoration: underline;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+/* تنسيق النافذة (Modal) */
+.modal {
+    display: none; 
+    position: fixed; 
+    z-index: 2000; 
+    left: 0;
+    top: 0;
+    width: 100%; 
+    height: 100%; 
+    background-color: rgba(0,0,0,0.8);
+    backdrop-filter: blur(5px);
+}
+
+.modal-content {
+    position: relative;
+    margin: 10% auto;
+    width: 90%;
+    max-width: 500px;
+    background: white;
+    padding: 10px;
+    border-radius: 8px;
+}
+
+.modal-content img {
+    width: 100%;
+    height: auto;
+    border-radius: 4px;
+}
+
+.close-modal {
+    position: absolute;
+    top: -40px;
+    right: 0;
+    color: white;
+    font-size: 35px;
+    font-weight: bold;
+    cursor: pointer;
+}
+/* تعطيل الهوفر في الموبايل وتشغيل تأثير اللمس */
+@media (max-width: 768px) {
+    .product-card:hover {
+        transform: none !important; /* الغاء الارتفاع او الحركة */
+    }
+
+    .product-card:active {
+        transform: scale(0.98); /* هزه خفيفة للداخل تحسسه إنه داس فعلاً */
+        transition: 0.1s;
+    }
+
+    .options-btn:active {
+        background-color: #333 !important; /* تغيير لون الزرار لحظة الضغط */
+        color: white;
+    }
+}
+/* 1. بنشيل اللون الأزرق عن اللينك نفسه */
+.options-btn a, 
+.options-btn {
+    color: black !important; /* بيجبر الخط يبقى أسود */
+    text-decoration: none !important; /* بيشيل الخط اللي تحت الكلمة */
+}
+
+/* 2. بنلغي حركات الأيفون الرخمة في الزراير */
+.options-btn {
+    appearance: none;
+    -webkit-appearance: none; /* عشان سفاري */
+    background-color: white; /* تأكد إن الخلفية بيضاء زي ما أنت عايز */
+    border: 1px solid #ccc; /* لو عايز تحدده */
+}
+
+/* 3. أهم حتة: لما تدوس عليه بالموبايل (الحالة النشطة) */
+.options-btn a:active, 
+.options-btn a:focus {
+    color: black !important;
+}
+/* الحل النهائي - المسطرة اللي هتظبط السهم */
+/* ابحث عن .scroll-down وغير القيم دي */
+.scroll-down {
+    position: absolute !important;
+    left: 49.5% !important; /* قللناها من 50% لـ 48.5% عشان يزق شمال سنة بسيطة */
+    bottom: 30px !important;
+    transform: translateX(-50%) !important;
+    display: flex !important;
+    flex-direction: column;
+    align-items: center;
+    z-index: 100;
+}
+
+.scroll-down {
+    position: absolute !important;
+    left: 50% !important;
+    bottom: 25px !important;
+    /* الـ transform هنا بيضمن إن السهم يتسنتر في النص بالملي */
+    transform: translateX(-50%) !important; 
+    display: flex !important;
+    flex-direction: column;
+    align-items: center;
+    z-index: 100;
+}
+
+.scroll-down span {
+    width: 15px; /* مقاس موحد */
+    height: 15px; /* مقاس موحد */
+    border-bottom: 2px solid white;
+    border-right: 2px solid white;
+    /* الـ rotate(45deg) هو اللي بيعمل شكل السهم */
+    /* ضيفنا translate عشان نضمن إن مفيش ضلع يبان أطول من التاني بسبب زاوية الدوران */
+    transform: rotate(45deg);
+    display: block;
+    animation: bounceSita 2s infinite;
+    box-sizing: border-box; /* عشان الـ border يتحسب من ضمن المقاس */
+}
+
+@keyframes bounceSita {
+    0%, 20%, 50%, 80%, 100% { 
+        transform: translateY(0) rotate(45deg); 
+    }
+    40% { 
+        transform: translateY(-10px) rotate(45deg); 
+    }
+    60% { 
+        transform: translateY(-5px) rotate(45deg); 
+    }
+}
+
+/* تظبيط الموبايل - الفونتات والأماكن */
+@media (max-width: 768px) {
+    .scroll-down {
+        bottom: 15px !important;
+        /* زقة خفيفة للشمال عشان يوازن كلمة Shop Now لو حسيتها مش متسنترة */
+        left: 49% !important; 
+    }
+    
+    .hero-content h1 {
+        font-family: var(--luxury-font) !important;
+    }
+    
+    .small-text {
+        font-family: var(--elegant-font) !important;
+    }
+}
+
+/* حط ده في ملف الـ CSS */
+.chip.out-of-stock {
+    opacity: 0.4;
+    text-decoration: line-through;
+    cursor: not-allowed;
+    background-color: #f0f0f0 !important;
+    color: #999 !important;
+}
+ .product-card {
+            cursor: pointer;
+            transition: transform 0.3s ease;
+            background: #fff;
+            border-radius: 12px; 
+            overflow: hidden; 
+            display: flex;
+            flex-direction: column;
+            padding: 0 !important; 
+            border: 1px solid #eee;
+        }
+
+        .image-wrapper {
+            width: 100%;
+            margin: 0;
+            padding: 0;
+            line-height: 0; 
+        }
+
+        .image-wrapper img {
+            width: 100%;
+            height: auto;
+            display: block;
+            margin: 0;
+        }
+
+        .product-info {
+            padding: 15px; 
+            text-align: left; /* رجوع الكلام للشمال زي ما طلبت */
+        }
+
+        .product-info h3 {
+            margin: 0 0 5px 0;
+            text-transform: capitalize;
+        }
+
+        .product-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+        }
+
+        .options-btn {
+            pointer-events: auto;
+            width: 100%;
+            margin-top: 10px;
+            text-align: center; /* الزرار يفضل سنتر عشان شكله أشيك */
+        }
+
+        /* السلايدر الجديد */
+.slider-container {
+    direction: ltr;
+    display: flex;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory; /* بيخلي الصورة تقف في النص بالظبط */
+    scroll-behavior: smooth;
+    gap: 0; /* مفيش فراغات عشان تبان كأنها صورة واحدة */
+    width: 100%;
+    -webkit-overflow-scrolling: touch; /* نعومة السحب على الآيفون */
+}
+
+.slider-container::-webkit-scrollbar {
+    display: none; /* إخفاء شريط التمرير المقرف */
+}
+
+.slider-item {
+    min-width:100%;
+    aspect-ratio: 3/4;
+    flex: 0 0 100%;
+    scroll-snap-align: center;
+    overflow: hidden;
+}
+
+.slider-item img {
+    width: 100%;
+    height: 100%;
+    display: block;
+    object-fit: cover;
+}
+
+/* النقط */
+.slider-dots {
+    display: flex;
+    justify-content: center;
+    gap: 6px;
+    margin-top: 15px;
+}
+
+.dot {
+    width: 7px;
+    height: 7px;
+    background: #ddd;
+    border-radius: 50%;
+    transition: all 0.3s ease;
+}
+
+.dot.active {
+    background: #000;
+    width: 18px; /* الحركة الشيك لما النقطة تطول */
+    border-radius: 10px;
+}
+
+/* السعر الجديد: صغرنا المقاس لـ 1rem عشان يبقى أرق */
+/* وعاء السعر بالكامل */
+.price-container {
+    display: flex;
+    flex-direction: column; /* السعر القديم فوق والجديد تحت عشان الزحمة */
+    align-items: center;    /* سنترة العناصر في النص */
+    justify-content: center;
+    gap: 2px;               /* مسافة بسيطة بين السطرين */
+    margin-top: 5px;
+    width: 100%;
+}
+
+/* السعر الجديد (النبيتي) */
+.new-price, .discount-price {
+    color: #b12704 !important; 
+    font-weight: 700;
+    font-size: 0.95rem;     /* حجم أصغر وأرق */
+    display: flex;
+    align-items: baseline;
+    gap: 3px;
+}
+
+/* السعر القديم (الرمادي) */
+.old-price {
+    color: #999 !important;
+    text-decoration: line-through;
+    font-size: 0.7rem;      /* حجم صغير جداً للمشطوب */
+    font-weight: 400;
+
+}
+
+/* العملة (EGP) */
+.currency {
+    font-size: 0.65rem !important; /* تصغير العملة عشان تليق مع الأرقام */
+    font-weight: 600;
+}
+
+/* --- 1. تظبيط اللوجو عشان يجي في النص بالظبط ف الموبايل --- */
+@media (max-width: 768px) {
+    .logo {
+        margin-left: 25px; /* بيزق كلمة سيتا يمين شوية عشان تتوسطن */
+        display: inline-block;
+    }
+}
+
+/* السكاشن كلها في البداية مختفية ونازلة لتحت سنة */
+.reveal-on-scroll {
+    opacity: 0 !important;
+    transform: translateY(40px);
+    transition: opacity 1.2s cubic-bezier(0.25, 1, 0.5, 1), 
+                transform 1.2s cubic-bezier(0.25, 1, 0.5, 1);
+}
+
+/* لما الكلاس ده يضاف تظهر السكاشن */
+.reveal-on-scroll.is-visible {
+    opacity: 1 !important;
+    transform: translateY(0) !important;
+}
+
+/* حركة زووم للهيرو عند الفتح لجعل الدخول فخم */
+.hero {
+    animation: heroImageZoom 3s ease-out forwards;
+}
+
+@keyframes heroImageZoom {
+    from { transform: scale(1.1); }
+    to { transform: scale(1); }
+}

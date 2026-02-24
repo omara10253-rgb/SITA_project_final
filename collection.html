@@ -1,0 +1,386 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SITA - Full Collection</title>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,wght@0,700;1,400&family=Cormorant+Garamond:wght@400;600;700&display=swap" rel="stylesheet">
+    
+    <link rel="stylesheet" href="lol2.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+<style>
+    :root {
+        --luxury-font: 'Bodoni Moda', serif;
+        --elegant-font: 'Cormorant Garamond', serif;
+        --brand-red: #b12704;
+    }
+
+    body {
+        background-color: #000 !important;
+        font-family: var(--elegant-font) !important;
+        color: #fff;
+        overflow-x: hidden; 
+    }
+
+    /* --- 1. تعديل شريط التابات للسكرول بالجنب --- */
+    .filter-tabs {
+        display: flex;
+        justify-content: center; /* في الديسك توب يفضل في النص */
+        gap: 12px;
+        margin: 30px 0;
+        padding: 10px 15px;
+        overflow-x: auto; /* يسمح بالسكرول */
+        white-space: nowrap; /* يمنع نزول التابات تحت بعض */
+        scrollbar-width: none; /* يخفي السكرول في فيرفوكس */
+        -ms-overflow-style: none; /* يخفي السكرول في إيدج */
+        
+        /* الأنيميشن الأصلي */
+        opacity: 0;
+        transform: translateX(50px);
+        animation: slideInRight 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+        animation-delay: 0.2s;
+    }
+
+    /* يخفي شريط السكرول تماماً عشان الشكل يبان احترافي */
+    .filter-tabs::-webkit-scrollbar {
+        display: none;
+    }
+
+    @keyframes slideInRight {
+        to {
+            opacity: 1;
+            transform: translateX(0);
+        }
+    }
+
+    .tab-btn {
+        flex: 0 0 auto; /* مهم جداً عشان الزراير متكشش */
+        background: transparent;
+        border: 1px solid rgba(255,255,255,0.4);
+        color: #fff;
+        padding: 8px 25px;
+        border-radius: 50px; 
+        cursor: pointer;
+        font-family: var(--elegant-font);
+        font-size: 13px;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        transition: all 0.3s ease;
+    }
+
+    .tab-btn.active {
+        background: #fff;
+        color: #000;
+        border-color: #fff;
+        font-weight: 700;
+    }
+
+    /* --- 2. باقي الستايلات كما هي --- */
+    .products-container {
+        display: grid !important;
+        grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)) !important;
+        gap: 20px !important;
+        padding: 20px;
+        align-items: stretch !important;
+    }
+
+    .product-card {
+        cursor: pointer;
+        background: #fff;
+        border-radius: 8px;
+        overflow: hidden;
+        display: flex !important;
+        flex-direction: column !important;
+        border: none;
+        height: 100%;
+        opacity: 0;
+        transform: translateY(40px);
+        transition: transform 0.6s cubic-bezier(0.2, 0.8, 0.2, 1), 
+                    opacity 0.6s ease, 
+                    box-shadow 0.3s ease !important;
+    }
+
+    .product-card.reveal {
+        opacity: 1;
+        transform: translateY(0);
+    }
+
+    .product-card.hidden {
+        display: none !important;
+    }
+
+    .product-card:hover {
+        transform: translateY(-8px) !important;
+        box-shadow: 0 10px 25px rgba(255,255,255,0.1);
+    }
+
+    @media (max-width: 768px) {
+        .filter-tabs {
+            justify-content: flex-start; /* في الموبايل يبدأ من الشمال عشان العميل يسحب */
+        }
+        .products-container {
+            grid-template-columns: repeat(2, 1fr) !important;
+            gap: 10px !important;
+        }
+        .tab-btn { padding: 6px 18px; font-size: 11px; }
+    }
+
+    .image-wrapper {
+        width: 100%;
+        aspect-ratio: 3 / 4 !important;
+        overflow: hidden;
+        background: #fff;
+    }
+
+    .image-wrapper img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover !important;
+    }
+
+    .product-info {
+        padding: 15px !important;
+        display: flex !important;
+        flex-direction: column !important;
+        flex-grow: 1 !important;
+        text-align: left;
+    }
+
+    .product-info h3 {
+        font-family: var(--luxury-font) !important;
+        font-weight: 700 !important;
+        color: #000 !important;
+        font-size: 16px !important;
+        margin: 0 0 8px 0 !important;
+        min-height: 40px;
+    }
+
+    .product-info .brand {
+        font-family: var(--elegant-font) !important; 
+        color: #777 !important;
+        font-size: 10px !important;
+        margin-top: auto;
+        letter-spacing: 2px !important;
+        text-transform: uppercase;
+    }
+
+    .product-info .price {
+        font-family: var(--luxury-font) !important; 
+        font-weight: 700 !important;
+        font-size: 18px !important;
+        color: #000 !important;
+        margin: 5px 0 15px 0;
+    }
+
+    .options-btn {
+        font-family: var(--elegant-font) !important;
+        font-weight: 600 !important;
+        text-transform: uppercase;
+        width: 100%;
+        padding: 10px;
+        border: 1px solid #ccc;
+        background: #fff;
+        color: #000;
+        cursor: pointer;
+        transition: 0.3s ease;
+    }
+
+    .options-btn:hover {
+        background: #000;
+        color: #fff;
+    }
+
+    .section-title {
+        font-family: var(--luxury-font) !important;
+        text-align: center;
+        color: #fff;
+        margin-bottom: 20px;
+        letter-spacing: 2px;
+    }
+</style>
+</head>
+<body>
+
+    <div class="side-menu" id="side-menu">
+        <div class="close-btn" id="close-btn">&times;</div>
+        <nav>
+            <a href="lol.html">Home</a> 
+            <a href="Collection.html">Our Collection</a>
+            <a href="https://www.instagram.com/sita.eg/" target="_blank">Contact Us</a>
+        </nav>
+    </div>
+
+    <div class="menu-overlay" id="menu-overlay"></div>
+
+    <header class="header">
+        <div class="menu-icon" id="menu-toggle"><span></span><span></span><span></span></div>
+        <div class="logo" style="cursor: pointer;" onclick="window.location.href='lol.html'">SITA</div>
+        <div class="header-icons">
+            <div class="cart-icon" onclick="window.location.href='cart.html'" style="position: relative; cursor: pointer; display: inline-block;">
+                <i class="fas fa-shopping-cart" style="font-size: 20px;"></i>
+                <span id="cart-count" style="position: absolute; top: -8px; right: -10px; background: red; color: white; border-radius: 50%; width: 18px; height: 18px; display: flex; align-items: center; justify-content: center; font-size: 11px; font-weight: bold; border: 2px solid white;">0</span>
+            </div>
+        </div>
+    </header>
+
+    <section class="pants-collection" style="min-height: 80vh; padding-top: 120px;">
+        <h2 class="section-title">FULL COLLECTION</h2>
+
+        <div class="filter-tabs">
+            <button class="tab-btn active" onclick="filterProducts('all', this)">ALL</button>
+            <button class="tab-btn" onclick="filterProducts('polo', this)">POLO</button>
+            <button class="tab-btn" onclick="filterProducts('hoodie', this)">HOODIES</button>
+            <button class="tab-btn" onclick="filterProducts('jacket', this)">JACKETS</button>
+        </div>
+        
+        <div class="products-container" id="collection-grid">
+            <div class="product-card" data-category="polo" onclick="openProduct('Black Round', '800', 'IMG_6705.JPG')">
+                <div class="image-wrapper"><img src="IMG_6705.JPG" alt="Black Round"></div>
+                <div class="product-info">
+                    <h3>Black Polo</h3>
+                    <p class="brand">SITA</p>
+                    <p class="price">800.00 EGP</p>
+                    <button class="options-btn">Choose options</button>
+                </div>
+            </div>
+
+            <div class="product-card" data-category="polo" onclick="openProduct('burgundy Round', '800', 'IMG_9214.PNG')">
+                <div class="image-wrapper"><img src="IMG_9214.PNG" alt="Burgundy Round"></div>
+                <div class="product-info">
+                    <h3>burgundy Polo</h3>
+                    <p class="brand">SITA</p>
+                    <p class="price">800.00 EGP</p>
+                    <button class="options-btn">Choose options</button>
+                </div>
+            </div>
+
+            <div class="product-card" data-category="polo" onclick="openProduct('grey Round', '800', 'IMG_9215.PNG')">
+                <div class="image-wrapper"><img src="IMG_9215.PNG" alt="Grey Round"></div>
+                <div class="product-info">
+                    <h3>grey Polo</h3>
+                    <p class="brand">SITA</p>
+                    <p class="price">800.00 EGP</p>
+                    <button class="options-btn">Choose options</button>
+                </div>
+            </div>
+
+            <div class="product-card" data-category="hoodie" onclick="openProduct('burgundy Hoodie', '750', 'IMG_9218.PNG')">
+                <div class="image-wrapper"><img src="IMG_9218.PNG" alt="Burgundy Hoodie"></div>
+                <div class="product-info">
+                    <h3>burgundy Hoodie</h3>
+                    <p class="brand">SITA</p>
+                    <p class="price">750.00 EGP</p>
+                    <button class="options-btn">Choose options</button>
+                </div>
+            </div>
+
+            <div class="product-card" data-category="hoodie" onclick="openProduct('black Hoodie', '750', 'IMG_9220.PNG')">
+                <div class="image-wrapper"><img src="IMG_9220.PNG" alt="Black Hoodie"></div>
+                <div class="product-info">
+                    <h3>black Hoodie</h3>
+                    <p class="brand">SITA</p>
+                    <p class="price">750.00 EGP</p>
+                    <button class="options-btn">Choose options</button>
+                </div>
+            </div>
+
+            <div class="product-card" data-category="hoodie" onclick="openProduct('grey hoodie', '750', 'IMG_9219.PNG')">
+                <div class="image-wrapper"><img src="IMG_9219.PNG" alt="Grey Hoodie"></div>
+                <div class="product-info">
+                    <h3>grey hoodie</h3>
+                    <p class="brand">SITA</p>
+                    <p class="price">750.00 EGP</p>
+                    <button class="options-btn">Choose options</button>
+                </div>
+            </div>
+
+            <div class="product-card" data-category="jacket" onclick="openProduct('Black Jacket', '1500', 'IMG_9221.PNG')">
+                <div class="image-wrapper"><img src="IMG_9221.PNG" alt="Black Jacket"></div>
+                <div class="product-info">
+                    <h3>Black Wool Jacket</h3>
+                    <p class="brand">SITA</p>
+                    <p class="price">1500.00 EGP</p>
+                    <button class="options-btn">Choose options</button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer class="footer-simple" style="padding: 40px 20px; text-align: center; border-top: 1px solid #222;">
+        <h3>follow us on</h3>
+        <div class="social-links" style="margin: 15px 0;">
+            <a href="#" style="color: #fff; margin: 0 10px;"><i class="fab fa-facebook-f"></i></a>
+            <a href="https://www.instagram.com/sita.eg/" target="_blank" style="color: #fff; margin: 0 10px;"><i class="fab fa-instagram"></i></a>
+            <a href="#" style="color: #fff; margin: 0 10px;"><i class="fab fa-tiktok"></i></a>
+        </div>
+        <p class="copyright">©️ 2026, SITA Powered by Omar</p>
+    </footer>
+    
+    <script src="main.js"></script>
+  <script>
+    // --- 1. وظيفة الـ Reveal عند الدخول (Staggered Animation) ---
+    function revealProducts() {
+        const cards = document.querySelectorAll('.product-card');
+        cards.forEach((card, index) => {
+            // تأخير 100 ميللي ثانية بين كل كارت والتاني عشان يظهروا بترتيب شيك
+            setTimeout(() => {
+                card.classList.add('reveal');
+            }, 100 * index); 
+        });
+    }
+
+    // --- 2. وظيفة الفلترة الذكية (Independent Logic) ---
+    function filterProducts(category, btn) {
+        const cards = document.querySelectorAll('.product-card');
+        const tabs = document.querySelectorAll('.tab-btn');
+
+        // تغيير شكل الزرار النشط
+        tabs.forEach(tab => tab.classList.remove('active'));
+        btn.classList.add('active');
+
+        cards.forEach(card => {
+            const cardCategory = card.getAttribute('data-category');
+            
+            // تأثير اختفاء ناعم قبل تغيير الحالة
+            card.style.opacity = '0';
+            card.style.transform = 'translateY(20px)';
+
+            setTimeout(() => {
+                if (category === 'all' || cardCategory === category) {
+                    card.classList.remove('hidden');
+                    // استراحة بسيطة قبل ما يظهر تاني عشان الأنيميشن يبان
+                    setTimeout(() => {
+                        card.style.opacity = '1';
+                        card.style.transform = 'translateY(0)';
+                    }, 50);
+                } else {
+                    card.classList.add('hidden');
+                }
+            }, 300);
+        });
+    }
+
+    // --- 3. وظائف السلة والتنقل ---
+    function openProduct(name, price, img) {
+        const params = new URLSearchParams({ name, price, img });
+        window.location.href = `product-details.html?${params.toString()}`;
+    }
+
+    function updateCartBadge() {
+        let cart = JSON.parse(localStorage.getItem('sitaCart')) || [];
+        const cartCount = document.getElementById('cart-count');
+        if(cartCount) cartCount.innerText = cart.length;
+    }
+
+    // --- 4. تشغيل كل حاجة عند تحميل الصفحة ---
+    document.addEventListener('DOMContentLoaded', () => {
+        updateCartBadge();
+        // تشغيل أنيميشن الظهور التدريجي
+        setTimeout(revealProducts, 300); 
+    });
+
+    window.addEventListener('pageshow', updateCartBadge);
+</script>
+</body>
+</html>
