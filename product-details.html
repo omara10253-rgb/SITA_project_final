@@ -1,0 +1,645 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SITA - Product Details</title>
+    <link rel="stylesheet" href="lol2.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,wght@0,700;1,400&family=Cormorant+Garamond:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+ :root {
+    --luxury-font: 'Bodoni Moda', serif;
+    --elegant-font: 'Cormorant Garamond', serif;
+    --accent-color: #b12704; /* لون السعر الجديد */
+    --soft-gray: #f9f9f9;
+    --deep-black: #1a1a1a;
+}
+
+body {
+    font-family: var(--elegant-font) !important;
+    background-color: white;
+    margin: 0;
+    padding: 0;
+    color: var(--deep-black);
+    -webkit-font-smoothing: antialiased; /* تحسين جودة الخط */
+}
+
+/* 1. الهيدر المودرن */
+.header {
+    background: #000 !important;
+    padding: 12px 5% !important;
+    display: flex !important;
+    justify-content: space-between !important;
+    align-items: center !important;
+    position: sticky !important; /* ثابت وأنت بتسكرول */
+    top: 0;
+    width: 100% !important;
+    z-index: 1000;
+    box-sizing: border-box;
+}
+
+.logo {
+    color: white !important;
+    font-family: var(--luxury-font) !important;
+    font-weight: 700 !important;
+    font-size: 22px !important;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+}
+
+/* 2. حاوية المنتج */
+.product-page-container {
+    padding: 30px 5% !important;
+    max-width: 1100px;
+    margin: 0 auto;
+}
+
+/* 3. الصور (حل مشكلة الطول والبكسلة) */
+.slider-container {
+    width: 100%;
+    display: flex;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    scrollbar-width: none;
+    border-radius: 12px; /* حواف ناعمة للصور */
+    background: var(--soft-gray);
+}
+.slider-container::-webkit-scrollbar { display: none; }
+
+.slider-item {
+    min-width: 100%;
+    scroll-snap-align: start;
+}
+.slider-item img {
+    width: 100%;
+    aspect-ratio: 3/4; /* نسبة ذهبية لصور الملابس */
+    display: block;
+    object-fit: cover;
+    transition: transform 0.5s ease;
+}
+
+/* 4. السعر (Clear & Bold) */
+/* 4. السعر الرئيسي (فوق بعض بشياكة) */
+
+.product-info .price {
+        font-family: var(--luxury-font) !important; 
+        font-weight: 700 !important;
+        font-size: 14px !important; /* السعر لازم يكون واضح وفخم */
+        color: #000 !important;
+        margin: 5px 0 15px 0;
+        letter-spacing: 0.5px !important;
+        display: block !important;
+    }
+
+/* 5. الأزرار (High-End Style) */
+.main-add-btn, .buy-now-btn {
+    width: 100%;
+    padding: 16px;
+    margin-top: 12px;
+    font-weight: 600;
+    letter-spacing: 1.5px;
+    cursor: pointer;
+    border-radius: 8px;
+    transition: all 0.3s ease;
+    text-transform: uppercase;
+    font-size: 13px;
+}
+
+.main-add-btn { 
+    background: white; 
+    border: 1.5px solid var(--deep-black);
+    color: var(--deep-black);
+}
+.main-add-btn:hover { background: var(--soft-gray); }
+
+.buy-now-btn { 
+    background: var(--deep-black); 
+    color: white; 
+    border: none;
+}
+.buy-now-btn:hover { opacity: 0.9; transform: translateY(-2px); }
+
+/* 6. البوب أب (اللي كانت مبكسلة) */
+.modal-overlay {
+    display: none;
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    background: rgba(0, 0, 0, 0.6); /* تعتيم أخف وأشيك */
+    z-index: 99999 !important;
+    align-items: center;
+    justify-content: center;
+    backdrop-filter: blur(8px); /* زيادة البلور لإخفاء الخلفية بجمال */
+}
+
+.modal-content {
+    background: white;
+    padding: 30px;
+    width: 88%;
+    max-width: 400px;
+    border-radius: 20px; /* حواف مودرن جداً */
+    position: relative;
+    text-align: center;
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25); /* ظل ناعم جداً */
+    animation: slideUp 0.4s ease-out; /* حركة دخول شيك */
+}
+
+@keyframes slideUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* زرار Continue Shopping اللي طلبته */
+.continue-btn {
+    display: inline-block;
+    margin-top: 20px;
+    color: #777;
+    text-decoration: none;
+    font-size: 13px;
+    font-weight: 500;
+    border-bottom: 1px solid #ddd;
+    padding-bottom: 2px;
+    transition: 0.3s;
+}
+.continue-btn:hover {
+    color: #000;
+    border-color: #000;
+}
+
+/* ستايل المقاسات (Chips) */
+.chip {
+    padding: 10px 20px;
+    border: 1px solid #ddd;
+    background: white;
+    border-radius: 6px;
+    margin-right: 8px;
+    cursor: pointer;
+    transition: 0.3s;
+}
+.chip.active {
+    background: black;
+    color: white;
+    border-color: black;
+}
+.chip.out-of-stock {
+    background: #f5f5f5;
+    color: #ccc;
+    cursor: not-allowed;
+}
+
+/* تنسيق رابط الـ Size Chart الجديد */
+.size-chart-link {
+    margin: 15px 0;
+    display: block;
+}
+
+.size-chart-link a {
+    color: var(--deep-black);
+    text-decoration: none;
+    font-size: 16px; /* تكبير الخط */
+    font-weight: 600;
+    letter-spacing: 0.5px;
+    border-bottom: 1.5px solid #eee; /* خط خفيف تحت الكلمة لشياكة أكتر */
+    padding-bottom: 4px;
+    transition: all 0.3s ease;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px; /* مسافة بين الكلمة والإيموجي */
+}
+
+.size-chart-link a:hover {
+    color: var(--accent-color);
+    border-color: var(--accent-color);
+    gap: 12px; /* حركة بسيطة عند الوقوف بالماوس */
+}
+/* تنسيق قسم المنتجات المقترحة */
+.related-products {
+    margin-top: 50px !important;
+    padding-top: 30px !important;
+}
+
+#related-grid {
+    display: grid !important;
+    grid-template-columns: repeat(3, 1fr) !important; /* يخليهم 3 جنب بعض */
+    gap: 15px !important; /* مسافة بين الصور */
+    align-items: start;
+}
+
+#related-grid a {
+    text-decoration: none;
+    color: black;
+    font-size: 12px;
+}
+
+#related-grid img {
+    width: 100% !important;
+    aspect-ratio: 3/4 !important;
+    object-fit: cover !important;
+    border-radius: 8px;
+    display: block;
+}
+
+/* للموبايل: لو الشاشة صغيرة اوي خليهم 2 جنب بعض أو صغر الخط */
+@media (max-width: 480px) {
+    #related-grid {
+        gap: 10px !important;
+    }
+    #related-grid div {
+        font-size: 10px !important;
+    }
+}
+</style>
+</head>
+<body style="background-color: white; color: black;">
+
+    <header class="header">
+        <div class="logo" onclick="window.location.href='lol.html'" style="cursor: pointer;">SITA</div>
+        <div class="header-icons">
+            <a href="lol.html" style="color: white; text-decoration: none; font-size: 11px; font-weight: bold; letter-spacing: 1px;">← BACK TO HOME</a>
+        </div>
+    </header>
+
+    <section class="product-page-container">
+        <div class="product-layout">
+            
+            <div class="product-images">
+                <div class="slider-container" id="slider-container">
+                    </div>
+                <div class="slider-dots" id="slider-dots"></div>
+            </div>
+
+            <div class="product-info-column">
+                <p class="brand-tag">SITA STYLE</p>
+                <h1 id="product-name">Loading...</h1>
+                <div id="product-price" class="product-price-tag"></div>
+
+                <div class="size-chart-link">
+                    <a href="javascript:void(0)" onclick="showPopUp('sizeChartModal')">
+                        Size Chart 📏
+                    </a>
+                </div>
+
+                <div class="selector-section">
+                    <label>Size</label>
+                    <div class="size-chips" id="size-chips-container">
+                        <button class="chip">L</button>
+                        <button class="chip active">XL</button>
+                        <button class="chip">2XL</button>
+                    </div>
+                </div>
+
+                <div class="selector-section">
+                    <label>Quantity</label>
+                    <div class="qty-picker">
+                        <button onclick="changeQty(-1)">-</button>
+                        <input type="number" id="qty-val" value="1" readonly>
+                        <button onclick="changeQty(1)">+</button>
+                    </div>
+                </div>
+
+                <div class="action-buttons">
+                    <button class="main-add-btn" onclick="addToCart()">ADD TO CART</button>
+                    <button class="buy-now-btn" onclick="buyItNow()">BUY IT NOW</button>
+                </div>
+
+                <div class="product-extra-info">
+                    <div class="info-item">
+                        <h3>Details</h3>
+                        <p id="product-details-content">Loading details...</p>
+                    </div>
+                    <div class="info-item">
+                        <h3>Shipping Info</h3>
+                        <p>Delivery within 2-3 business days across Egypt. Tracking number provided via SMS.</p>
+                    </div>
+                </div>
+
+                <div class="policy-link-style">
+                    <a onclick="showPopUp('policyModal')" style="cursor: pointer;">Sita Policy (Return & Exchange)</a>
+                </div>
+            </div> </div> </section>
+
+    <div class="related-products" style="max-width: 1200px; margin: 80px auto; padding: 20px; border-top: 1px solid #eee;">
+        <h2 style="text-align: center; font-size: 18px; letter-spacing: 3px; margin-bottom: 40px; font-weight: 900; text-transform: uppercase;">You May Also Like</h2>
+        <div id="related-grid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 25px;">
+            </div>
+    </div>
+
+    <div id="cartModal" class="modal-overlay">
+        <div class="modal-content">
+            <p style="color:green; font-weight:bold;">✓ Item added to cart</p>
+            <div style="display:flex; gap:10px; align-items:center; margin:15px 0; text-align:left;">
+                <img id="modalProductImg" src="" style="width:60px; height:80px; object-fit:cover;">
+                <div>
+                    <h4 id="modalProductName" style="margin:0; font-size:14px;"></h4>
+                    <p id="modalProductSize" style="margin:0; font-size:12px; color:#666;"></p>
+                </div>
+            </div>
+            <button onclick="window.location.href='cart.html'" style="width:100%; padding:12px; background:white; border:1px solid black; margin-bottom:10px; cursor:pointer;">VIEW CART (<span id="modalCartCount">0</span>)</button>
+            <button onclick="window.location.href='checkout.html'" style="width:100%; padding:12px; background:black; color:white; border:none; margin-bottom:10px; cursor:pointer;">CHECKOUT</button>
+            <button type="button" onclick="hidePopUp('cartModal')" style="background:none; border:none; text-decoration:none; cursor:pointer; color:#888; margin-top:15px; width:100%; font-family: var(--elegant-font); font-size: 14px; font-weight: 500; letter-spacing: 1px; transition: 0.3s;" onmouseover="this.style.color='#000'; this.style.textDecoration='underline'" onmouseout="this.style.color='#888'; this.style.textDecoration='none'">
+                ← CONTINUE SHOPPING
+            </button>
+        </div>
+    </div>
+
+    <div id="policyModal" class="modal-overlay" onclick="hidePopUp('policyModal')">
+        <div class="modal-content" style="max-width: 400px; padding: 10px;" onclick="event.stopPropagation()">
+            <span class="close-x" onclick="hidePopUp('policyModal')" style="display: block; text-align: right; cursor: pointer; font-size: 20px;">&times;</span>
+            <img src="IMG_0137.PNG" style="width:100%; height:auto; display:block; border-radius:10px;">
+        </div>
+    </div>
+
+    <div id="sizeChartModal" class="modal-overlay" onclick="hidePopUp('sizeChartModal')">
+        <div class="modal-content" style="max-width: 400px; padding: 10px;" onclick="event.stopPropagation()">
+            <span class="close-x" onclick="hidePopUp('sizeChartModal')" style="display: block; text-align: right; cursor: pointer; font-size: 20px;">&times;</span>
+            <img id="dynamic-size-img" src="" style="width:100%; height:auto; display:block; border-radius:10px;">
+        </div>
+    </div>
+<script>
+    // 1. المتغيرات العامة
+    let currentIdx = 1;
+    let productImages = [];
+    let startX = 0;
+    let isMoving = false;
+
+    // 2. قاعدة بيانات تفاصيل المنتجات
+    const productDatabase = {
+        "Black Polo": "• black Polo - boxy fit.<br>• Premium high-quality fabric for maximum comfort.<br>• Modern fit designed for daily wear.",
+        "Burgundy Polo":"• Burgundy Polo - Boxy Fit.<br>• Premium high-quality fabric.<br>•Modern fit designed for daily wear.",
+        "Grey Polo": "• Grey Polo - boxy fit.<br>• Premium high-quality fabric for maximum comfort.<br>• Modern fit designed for daily wear.",
+        "burgundy Hoodie":"• burgundy Hoodie - boxy fit.<br>• Premium high-quality fabric for maximum comfort.<br>• Modern fit designed for daily wear.",
+        "black Hoodie": "• black Hoodie - boxy fit.<br>• Premium high-quality fabric for maximum comfort.<br>• Modern fit designed for daily wear.",
+        "grey Hoodie": "• grey Hoodie - boxy fit.<br>• Premium high-quality fabric for maximum comfort.<br>• Modern fit designed for daily wear.",
+        "Black Wool Jacket": "• black Jacket - boxy fit.<br>• Winter fabric-Soft Touch.<br>• Modern fit designed for daily wear."
+    };
+
+    // 3. دالة الشراء الفوري (Buy It Now)
+    function buyItNow() {
+        const activeSizeChip = document.querySelector('.chip.active');
+        if (!activeSizeChip || activeSizeChip.disabled) {
+            alert("Please select an available size first.");    
+            return;
+        }
+
+        const priceElement = document.getElementById('product-price');
+        const newPriceTag = priceElement.querySelector('.new-price, .discount-price');
+        let finalPrice = newPriceTag ? newPriceTag.innerText : priceElement.innerText;
+
+        const product = {
+            name: document.getElementById('product-name').innerText,
+            price: finalPrice.replace(/[^\d]/g, ''), 
+            img: (typeof productImages !== 'undefined' && productImages.length > 0) ? productImages[0] : "", 
+            size: activeSizeChip.innerText.split('\n')[0].trim(),
+            qty: document.getElementById('qty-val').value
+        };
+        
+        localStorage.removeItem('quickBuy'); 
+        localStorage.setItem('quickBuy', JSON.stringify(product));
+        window.location.href = 'checkout.html';
+    }
+
+    // 4. تشغيل الصفحة وتحميل البيانات (OnLoad)
+    window.onload = () => {
+        // إخفاء المودال في البداية
+        const cartModal = document.getElementById('cartModal');
+        if (cartModal) cartModal.style.display = 'none';
+        
+        const urlParams = new URLSearchParams(window.location.search);
+        const name = urlParams.get('name');
+        const mainImg = urlParams.get('img');
+        const rawPrice = urlParams.get('price'); 
+        
+        if(name) {
+            const decodedName = decodeURIComponent(name).trim();
+            document.getElementById('product-name').innerText = decodedName;
+            
+            // حساب السعر والخصم أوتوماتيكياً
+            const priceElement = document.getElementById('product-price');
+            let original = parseInt(rawPrice.replace(/[^\d]/g, '')) || 0;
+            let discount = (original >= 1300) ? 400 : (original >= 700 ? 100 : 0);
+            let discounted = original - discount;
+
+            priceElement.style.cssText = "display: flex !important; flex-direction: column !important; align-items: flex-start !important; gap: 4px !important; margin: 15px 0 !important;";
+            priceElement.innerHTML = `
+                <div class="old-price" style="text-decoration: line-through; color: #a0a0a0; font-size: 14px;">${original} EGP</div>
+                <div class="new-price" style="color: #b12704; font-family: 'Bodoni Moda', serif; font-weight: 700; font-size: 22px; line-height: 1;">${discounted} EGP</div>
+            `;
+
+            // جلب التفاصيل من قاعدة البيانات
+            const detailsBox = document.getElementById('product-details-content');
+            const dbKey = Object.keys(productDatabase).find(key => key.toLowerCase() === decodedName.toLowerCase());
+            detailsBox.innerHTML = dbKey ? productDatabase[dbKey] : "• Premium high-quality fabric.<br>• Modern fit designed for daily wear.";
+
+            // فحص المخزون والمقاسات
+            if (typeof allProducts !== 'undefined') {
+                const productInfo = allProducts.find(p => p.name.toLowerCase() === decodedName.toLowerCase());
+                const sizeChips = document.querySelectorAll('.chip');
+                if (productInfo && productInfo.availableSizes) {
+                    sizeChips.forEach(chip => {
+                        const sizeText = chip.innerText.trim();
+                        if (!productInfo.availableSizes.includes(sizeText)) {
+                            chip.classList.add('out-of-stock');
+                            chip.disabled = true;
+                            chip.style.pointerEvents = "none";
+                            chip.innerHTML = `${sizeText} <br><span style="font-size:9px; color:red;">Out of Stock</span>`;
+                        }
+                    });
+                }
+            }
+
+            // تشغيل السلايدر
+            if (mainImg && typeof initSlider === "function") {
+                const dotIndex = mainImg.lastIndexOf('.');
+                const baseName = mainImg.substring(0, dotIndex);
+                const ext = mainImg.substring(dotIndex);
+                productImages = [mainImg, `${baseName}_2${ext}`, `${baseName}_3${ext}`,`${baseName}_4${ext}`]; 
+                initSlider(productImages);
+            }
+            if (typeof renderRelated === "function") renderRelated(decodedName);
+        }
+
+        // تفاعل أزرار المقاسات
+        document.querySelectorAll('.chip').forEach(chip => {
+            chip.addEventListener('click', function() {
+                if (this.disabled) return;
+                document.querySelectorAll('.chip').forEach(c => c.classList.remove('active'));
+                this.classList.add('active');
+            });
+        });
+    };
+
+    // 5. عرض المنتجات المقترحة
+    function renderRelated(currentName) {
+        const grid = document.getElementById('related-grid');
+        if (!grid) return;
+
+        let targetPage = 'product-details.html';
+        let others = (typeof allProducts !== 'undefined') ? allProducts.filter(p => p.name !== currentName) : [];
+        let shuffled = others.sort(() => 0.5 - Math.random()).slice(0, 3);
+
+        grid.innerHTML = shuffled.map(p => `
+            <a href="${targetPage}?name=${encodeURIComponent(p.name)}&price=${encodeURIComponent(p.price)}&img=${encodeURIComponent(p.img)}" 
+               style="text-decoration: none; color: #000; display: flex; flex-direction: column; text-align: left; position: relative;">
+                <div style="position: absolute; top: 5px; left: 5px; background: #ff0000; color: white; padding: 2px 5px; font-size: 8px; font-weight: 900; border-radius: 2px; z-index: 2; text-transform: uppercase;">SALE</div>
+                <div style="width: 100%; aspect-ratio: 3/4; overflow: hidden; border-radius: 4px; background: #f9f9f9; margin-bottom: 8px;">
+                    <img src="${p.img}" style="width: 100%; height: 100%; object-fit: cover;">
+                </div>
+                <div style="padding: 0 2px; flex-grow: 1;">
+                    <div style="font-weight: 700; font-size: 10px; text-transform: uppercase; min-height: 24px; line-height: 1.2; margin-bottom: 4px; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;">
+                        ${p.name}
+                    </div>
+                    <div class="price" style="font-weight: bold; font-size: 11px;">
+                        ${p.price}
+                    </div>
+                </div>
+            </a>
+        `).join('');
+    }
+</script>
+<script>
+// 1. نظام السلايدر (السحب الأفقي الناعم)
+function initSlider(images) {
+    const container = document.getElementById('slider-container');
+    const dotsContainer = document.getElementById('slider-dots');
+    
+    if(!container || !dotsContainer) return;
+
+    container.innerHTML = images.map(img => `
+        <div class="slider-item">
+            <img src="${img}" alt="SITA View">
+        </div>
+    `).join('');
+
+    dotsContainer.innerHTML = images.map((_, i) => `
+        <div class="dot ${i === 0 ? 'active' : ''}"></div>
+    `).join('');
+
+    // تصحيح مكان السكرول عند البداية
+    container.scrollLeft = 0;
+    setTimeout(() => {
+        container.scrollTo({ left: 0, behavior: 'instant' });
+    }, 100);
+
+    container.addEventListener('scroll', () => {
+        const scrollIndex = Math.round(container.scrollLeft / container.offsetWidth);
+        const dots = document.querySelectorAll('.dot');
+        dots.forEach((dot, i) => {
+            dot.classList.toggle('active', i === scrollIndex);
+        });
+    });
+}
+
+// 2. التحكم في الكمية
+function changeQty(amt) {
+    let input = document.getElementById('qty-val');
+    let val = parseInt(input.value) + amt;
+    if (val >= 1) input.value = val;
+}
+
+// 3. إضافة المنتج للعربة
+function addToCart() {
+    const productName = document.getElementById('product-name').innerText;
+    const priceElement = document.getElementById('product-price');
+    
+    const newPriceTag = priceElement.querySelector('.new-price, .discount-price');
+    let finalPrice = newPriceTag ? newPriceTag.innerText : priceElement.innerText;
+    let cleanPrice = finalPrice.replace(/[^\d]/g, ''); 
+
+    const oldPriceText = priceElement.querySelector('.old-price')?.innerText || "";
+
+    // 1. جلب السلة الحالية
+    let cart = JSON.parse(localStorage.getItem('sitaCart')) || [];
+    
+    // 2. سحب المقاس المختار بدقة
+    const activeChip = document.querySelector('.chip.active');
+    const activeSize = activeChip ? activeChip.innerText.split('\n')[0].trim() : "L";
+    
+    const productImg = (typeof productImages !== 'undefined' && productImages.length > 0) ? productImages[0] : "";
+    const quantity = parseInt(document.getElementById('qty-val').value) || 1;
+
+    // 3. ذكاء السلة: لو المنتج بنفس المقاس موجود، زود الكمية بس بدل ما تكرره
+    const existingProductIndex = cart.findIndex(item => item.name === productName && item.size === activeSize);
+
+    if (existingProductIndex > -1) {
+        // موجود قبل كدة؟ زود الكمية
+        cart[existingProductIndex].qty = parseInt(cart[existingProductIndex].qty) + quantity;
+    } else {
+        // جديد؟ ضيفه كسطر جديد
+        cart.push({ 
+            name: productName, 
+            price: cleanPrice, 
+            oldPriceDisplay: oldPriceText, 
+            img: productImg, 
+            size: activeSize, 
+            qty: quantity 
+        });
+    }
+    
+    // 4. حفظ السلة ومسح الـ Quick Buy فوراً
+    localStorage.setItem('sitaCart', JSON.stringify(cart));
+    localStorage.removeItem('quickBuy'); // السطر ده هو اللي هيحل مشكلة الـ Checkout
+
+    // 5. تحديث بيانات المودال (البوب أب)
+    document.getElementById('modalProductName').innerText = productName;
+    document.getElementById('modalProductImg').src = productImg;
+    document.getElementById('modalProductSize').innerText = "Size: " + activeSize;
+    
+    // تحديث عداد المنتجات في البوب أب (إجمالي عدد الأنواع أو إجمالي القطع)
+    const modalCounter = document.getElementById('modalCartCount');
+    if (modalCounter) {
+        modalCounter.innerText = cart.length; 
+    }
+
+    showPopUp('cartModal');
+}
+
+// 4. التحكم في النوافذ المنبثقة (Pop-ups)
+function showPopUp(id) {
+    const modal = document.getElementById(id);
+    if (!modal) return;
+
+    if (id === 'sizeChartModal') {
+        const productName = document.getElementById('product-name').innerText.toLowerCase();
+        const chartImg = document.getElementById('dynamic-size-img');
+        if (chartImg) {
+            if (productName.includes('hoodie')) chartImg.src = 'IMG_Hoodie.PNG';
+            else if (productName.includes('polo')) chartImg.src = 'IMG_Round.PNG';
+            else if (productName.includes('jacket')) chartImg.src = 'IMG_Jacket.PNG';
+            else chartImg.src = 'IMG_General.PNG';
+        }
+    }
+    modal.style.display = 'flex';
+    document.body.style.overflow = 'hidden';
+}
+
+function hidePopUp(id) {
+    const modal = document.getElementById(id);
+    if (modal) {
+        modal.style.display = 'none';
+        document.body.style.overflow = 'auto';
+    }
+}
+
+// إغلاق المودال عند الضغط خارجه
+window.onclick = (e) => {
+    if (e.target.classList.contains('modal-overlay')) {
+        hidePopUp(e.target.id);
+    }
+};
+
+// 5. مصفوفة المنتجات الكاملة (للمخزون والمقترحات)
+const allProducts = [
+    { name: "Black Polo", price: "800.00 EGP", img: "IMG_6705.JPG" ,availableSizes: ["L","XL", "2XL"] },
+    { name: "Burgundy Polo", price: "800.00 EGP", img: "IMG_9214.PNG",availableSizes: ["L","XL", "2XL"] },
+    { name: "Grey Polo", price: "800.00 EGP", img: "IMG_9215.PNG",availableSizes: ["L","XL", "2XL"]  },
+    { name: "burgundy Hoodie", price: "750.00 EGP", img: "IMG_9218.PNG",availableSizes: ["XL", "2XL"]  },
+    { name: "black Hoodie", price: "750.00 EGP", img: "IMG_9220.PNG",availableSizes: ["L","XL", "2XL"]},
+    { name: "grey Hoodie", price: "750.00 EGP", img: "IMG_9219.PNG", availableSizes: ["XL", "2XL"]},
+    { name: "Black Wool Jacket", price: "1500.00 EGP", img: "IMG_9221.PNG", availableSizes: ["L","XL", "2XL"]  }
+];
+</script>
+<script src="main.js"></script>
+</body>
+</html>
